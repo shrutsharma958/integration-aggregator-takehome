@@ -42,7 +42,11 @@ dist/
 # OpenBao / Vault local secrets
 unseal-keys*
 root-token*
-*.hcl
+
 
 # Local performance results
 perf-results/
+# Local OpenBao artifacts
+openbao-plugin-*
+plugin.tar.xz
+openbao-rendered.yaml

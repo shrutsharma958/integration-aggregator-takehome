@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: integration-aggregator
+  labels:
+    app: integration-aggregator
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: integration-aggregator
+
+  template:
+    metadata:
+      labels:
+        app: integration-aggregator
+
+    spec:
+      serviceAccountName: integration-aggregator
+
+      containers:
+        - name: integration-aggregator
+
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          ports:
+            - containerPort: 8080
+
+          env:
+            - name: OPENBAO_ADDRESS
+              value: {{ .Values.openbao.address | quote }}
+
+            - name: OPENBAO_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: integration-aggregator-openbao-token
+                  key: token
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
