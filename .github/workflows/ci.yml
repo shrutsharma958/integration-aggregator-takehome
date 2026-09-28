@@ -88,3 +88,12 @@ jobs:
           sleep 5
           curl --fail http://127.0.0.1:8080/healthz
           curl --fail http://127.0.0.1:8080/readyz
+      - name: Run performance test
+        run: |
+          python3 perf/benchmark.py http://127.0.0.1:8080/healthz
+
+      - name: Upload performance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-report
+          path: perf-results.md
