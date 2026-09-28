@@ -26,6 +26,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run tests
+        env:
+          OPENBAO_TOKEN: test-token
         run: python -m pytest -q
 
   build:
