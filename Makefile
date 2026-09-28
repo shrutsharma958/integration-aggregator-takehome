@@ -15,6 +15,10 @@ up:
 	@echo "Starting Minikube..."
 	@minikube status >$(NULL) 2>&1 || minikube start --driver=docker
 
+	@echo "Adding OpenBao Helm repository..."
+	@helm repo add openbao https://openbao.github.io/openbao-helm --force-update
+	@helm repo update
+
 	@echo "Installing/upgrading OpenBao..."
 	@helm upgrade --install openbao openbao/openbao \
 		-f ./deploy/openbao-values.yaml
